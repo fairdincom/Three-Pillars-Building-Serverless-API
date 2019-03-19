@@ -48,7 +48,7 @@ namespace Demo.FunctionApp
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(UserCollectionResponseModel), Summary = "User collection response")]
         #endregion
         public async Task<IActionResult> GetUsers(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/all")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequest req,
             ILogger log)
         {
             var result = await this._function

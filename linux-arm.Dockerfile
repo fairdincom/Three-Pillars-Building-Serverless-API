@@ -11,6 +11,8 @@ RUN dotnet build . -o output -r linux-arm
 FROM mcr.microsoft.com/azure-functions/dotnet:2.0-arm32v7 AS runtime
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot
+ENV AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+
 ENV FUNCTIONS_WORKER_RUNTIME=dotnet
 ENV OpenApi__Info__Version="2.0.0"
 ENV OpenApi__Info__Title="Open API Sample on Azure Functions"

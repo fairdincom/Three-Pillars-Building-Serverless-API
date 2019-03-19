@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
@@ -62,6 +63,11 @@ namespace Demo.FunctionApp.Configurations
             var location = Assembly.GetExecutingAssembly().Location;
             var segments = location.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).ToList();
             var basePath = string.Join(Path.DirectorySeparatorChar.ToString(), segments.Take(segments.Count - 2));
+
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                basePath = $"/{basePath}";
+            }
 
             return basePath;
         }
