@@ -41,7 +41,7 @@ namespace Demo.FunctionApp
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(ProductCollectionResponseModel), Summary = "Product collection response")]
         #endregion
         public static async Task<IActionResult> GetProducts(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "products/all")] HttpRequest req,
             ILogger log)
         {
             var result = await Factory.Create<IGetProductsFunction, ILogger>(log)
