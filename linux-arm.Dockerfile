@@ -1,5 +1,5 @@
 # Get .NET SDK image
-FROM mcr.microsoft.com/dotnet/core/sdk:2.1 AS builder
+FROM mcr.microsoft.com/dotnet/core/sdk:2.1-stretch-arm32v7 AS builder
 
 RUN mkdir /functions
 COPY src/Demo.FunctionApp /functions
