@@ -18,6 +18,7 @@ namespace Demo.FunctionApp
         /// <inheritdoc />
         public override void Load(IServiceCollection services)
         {
+            #region
             // services.AddSingleton<AppSettings>();
 
             // services.AddTransient<IDocumentHelper, DocumentHelper>();
@@ -25,6 +26,7 @@ namespace Demo.FunctionApp
             // services.AddTransient<ISwaggerUI, SwaggerUI>();
             // services.AddTransient<IRenderOpeApiDocumentFunction, RenderOpeApiDocumentFunction>();
             // services.AddTransient<IRenderSwaggerUIFunction, RenderSwaggerUIFunction>();
+            #endregion
 
             services.AddTransient<IProductService, ProductService>();
 
