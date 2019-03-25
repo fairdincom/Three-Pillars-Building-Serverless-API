@@ -46,7 +46,7 @@ namespace Demo.FunctionApp
         [FunctionName(nameof(RenderSwaggerDocument))]
         [OpenApiIgnore]
         public async Task<IActionResult> RenderSwaggerDocument(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.{extension}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "swagger.{extension}")] HttpRequest req,
             string extension,
             ILogger log)
         {
@@ -70,7 +70,7 @@ namespace Demo.FunctionApp
         [FunctionName(nameof(RenderOpenApiDocument))]
         [OpenApiIgnore]
         public async Task<IActionResult> RenderOpenApiDocument(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/{version}.{extension}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "openapi/{version}.{extension}")] HttpRequest req,
             string version,
             string extension,
             ILogger log)
@@ -93,7 +93,7 @@ namespace Demo.FunctionApp
         [FunctionName(nameof(RenderSwaggerUI))]
         [OpenApiIgnore]
         public async Task<IActionResult> RenderSwaggerUI(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "swagger/ui")] HttpRequest req,
             ILogger log)
         {
             var options = new RenderSwaggerUIFunctionOptions();
