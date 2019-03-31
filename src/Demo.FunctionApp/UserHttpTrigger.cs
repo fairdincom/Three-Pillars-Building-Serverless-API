@@ -1,9 +1,8 @@
-using System;
 using System.Net;
 using System.Threading.Tasks;
 
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Extensions;
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Triggers.Abstractions;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
@@ -22,18 +21,12 @@ namespace Demo.FunctionApp
     /// <summary>
     /// This represents the HTTP trigger entity for users.
     /// </summary>
-    public class UserHttpTrigger : TriggerBase<ILogger>
+    public static class UserHttpTrigger
     {
-        private readonly IGetUsersFunction _function;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserHttpTrigger"/> class.
+        /// Gets the <see cref="IFunctionFactory"/> instance.
         /// </summary>
-        /// <param name="function"><see cref="IGetUsersFunction"/> instance.</param>
-        public UserHttpTrigger(IGetUsersFunction function)
-        {
-            this._function = function ?? throw new ArgumentNullException(nameof(function));
-        }
+        public static IFunctionFactory Factory { get; } = new FunctionFactory<AppModule>();
 
         /// <summary>
         /// Gets the list of users.
@@ -47,14 +40,13 @@ namespace Demo.FunctionApp
         [OpenApiParameter("limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of users to return")]
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(UserCollectionResponseModel), Summary = "User collection response")]
         #endregion
-        public async Task<IActionResult> GetUsers(
+        public static async Task<IActionResult> GetUsers(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequest req,
             ILogger log)
         {
-            var result = await this._function
-                                   .AddLogger<IGetUsersFunction, ILogger>(log)
-                                   .InvokeAsync<HttpRequest, IActionResult>(req)
-                                   .ConfigureAwait(false);
+            var result = await Factory.Create<IGetUsersFunction, ILogger>(log)
+                                      .InvokeAsync<HttpRequest, IActionResult>(req)
+                                      .ConfigureAwait(false);
 
             return result;
         }

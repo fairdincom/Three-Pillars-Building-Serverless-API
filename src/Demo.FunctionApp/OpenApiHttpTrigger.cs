@@ -1,9 +1,8 @@
-using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Extensions;
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Triggers.Abstractions;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
 using Demo.FunctionApp.Functions;
@@ -20,21 +19,12 @@ namespace Demo.FunctionApp
     /// <summary>
     /// This represents the HTTP trigger for Open API.
     /// </summary>
-    public class OpenApiHttpTrigger : TriggerBase<ILogger>
+    public static class OpenApiHttpTrigger
     {
-        private readonly IRenderOpeApiDocumentFunction _openApiDoc;
-        private readonly IRenderSwaggerUIFunction _swaggerUi;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenApiHttpTrigger"/> class.
+        /// Gets the <see cref="IFunctionFactory"/> instance.
         /// </summary>
-        /// <param name="openApiDoc"><see cref="IRenderOpeApiDocumentFunction"/> instance.</param>
-        /// <param name="swaggerUi"><see cref="IRenderSwaggerUIFunction"/> instance.</param>
-        public OpenApiHttpTrigger(IRenderOpeApiDocumentFunction openApiDoc, IRenderSwaggerUIFunction swaggerUi)
-        {
-            this._openApiDoc = openApiDoc ?? throw new ArgumentNullException(nameof(openApiDoc));
-            this._swaggerUi = swaggerUi ?? throw new ArgumentNullException(nameof(swaggerUi));
-        }
+        public static IFunctionFactory Factory { get; } = new FunctionFactory<AppModule>();
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get Open API document.
@@ -45,16 +35,15 @@ namespace Demo.FunctionApp
         /// <returns>Open API document in a format of either JSON or YAML.</returns>
         [FunctionName(nameof(RenderSwaggerDocument))]
         [OpenApiIgnore]
-        public async Task<IActionResult> RenderSwaggerDocument(
+        public static async Task<IActionResult> RenderSwaggerDocument(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "swagger.{extension}")] HttpRequest req,
             string extension,
             ILogger log)
         {
             var options = new RenderOpeApiDocumentFunctionOptions("v2", extension, Assembly.GetExecutingAssembly());
-            var result = await this._openApiDoc
-                                   .AddLogger(log)
-                                   .InvokeAsync<HttpRequest, IActionResult>(req, options)
-                                   .ConfigureAwait(false);
+            var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
+                                      .InvokeAsync<HttpRequest, IActionResult>(req, options)
+                                      .ConfigureAwait(false);
 
             return result;
         }
@@ -69,17 +58,16 @@ namespace Demo.FunctionApp
         /// <returns>Open API document in a format of either JSON or YAML.</returns>
         [FunctionName(nameof(RenderOpenApiDocument))]
         [OpenApiIgnore]
-        public async Task<IActionResult> RenderOpenApiDocument(
+        public static async Task<IActionResult> RenderOpenApiDocument(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "openapi/{version}.{extension}")] HttpRequest req,
             string version,
             string extension,
             ILogger log)
         {
             var options = new RenderOpeApiDocumentFunctionOptions(version, extension, Assembly.GetExecutingAssembly());
-            var result = await this._openApiDoc
-                                   .AddLogger(log)
-                                   .InvokeAsync<HttpRequest, IActionResult>(req, options)
-                                   .ConfigureAwait(false);
+            var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
+                                      .InvokeAsync<HttpRequest, IActionResult>(req, options)
+                                      .ConfigureAwait(false);
 
             return result;
         }
@@ -92,15 +80,14 @@ namespace Demo.FunctionApp
         /// <returns>Swagger UI in HTML.</returns>
         [FunctionName(nameof(RenderSwaggerUI))]
         [OpenApiIgnore]
-        public async Task<IActionResult> RenderSwaggerUI(
+        public static async Task<IActionResult> RenderSwaggerUI(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "swagger/ui")] HttpRequest req,
             ILogger log)
         {
             var options = new RenderSwaggerUIFunctionOptions();
-            var result = await this._swaggerUi
-                                   .AddLogger(log)
-                                   .InvokeAsync<HttpRequest, IActionResult>(req, options)
-                                   .ConfigureAwait(false);
+            var result = await Factory.Create<IRenderSwaggerUIFunction, ILogger>(log)
+                                      .InvokeAsync<HttpRequest, IActionResult>(req, options)
+                                      .ConfigureAwait(false);
 
             return result;
         }
