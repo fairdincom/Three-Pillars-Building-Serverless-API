@@ -1,3 +1,4 @@
+#region
 using System.Net;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+#endregion
 
 namespace Demo.FunctionApp
 {
@@ -26,7 +28,7 @@ namespace Demo.FunctionApp
         /// <summary>
         /// Gets the <see cref="IFunctionFactory"/> instance.
         /// </summary>
-        public static IFunctionFactory Factory { get; } = new FunctionFactory<AppModule>();
+        public static IFunctionFactory Factory { get; set; } = new FunctionFactory<AppModule>();
 
         /// <summary>
         /// Gets the list of products.
@@ -47,6 +49,8 @@ namespace Demo.FunctionApp
             var result = await Factory.Create<IGetProductsFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequest, IActionResult>(req)
                                       .ConfigureAwait(false);
+
+            Factory.ResultInvoked = "lorem ipsum";
 
             return result;
         }

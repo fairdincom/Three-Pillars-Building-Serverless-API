@@ -26,7 +26,7 @@ namespace Demo.FunctionApp
         /// <summary>
         /// Gets the <see cref="IFunctionFactory"/> instance.
         /// </summary>
-        public static IFunctionFactory Factory { get; } = new FunctionFactory<AppModule>();
+        public static IFunctionFactory Factory { get; set; } = new FunctionFactory<AppModule>();
 
         /// <summary>
         /// Gets the list of users.

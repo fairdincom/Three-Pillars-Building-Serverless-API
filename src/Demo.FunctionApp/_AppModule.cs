@@ -1,6 +1,7 @@
 ﻿using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 
 using Demo.FunctionApp.Configurations;
 using Demo.FunctionApp.Functions;
@@ -19,13 +20,15 @@ namespace Demo.FunctionApp
         public override void Load(IServiceCollection services)
         {
             services.AddSingleton<AppSettings>();
+            #region
+            services.AddSingleton<RouteConstraintFilter, RouteConstraintFilter>();
 
             services.AddTransient<IDocumentHelper, DocumentHelper>();
             services.AddTransient<IDocument, Document>();
             services.AddTransient<ISwaggerUI, SwaggerUI>();
             services.AddTransient<IRenderOpeApiDocumentFunction, RenderOpeApiDocumentFunction>();
             services.AddTransient<IRenderSwaggerUIFunction, RenderSwaggerUIFunction>();
-
+            #endregion
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IUserService, UserService>();
 
