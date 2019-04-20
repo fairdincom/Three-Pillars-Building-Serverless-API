@@ -1,3 +1,4 @@
+#region
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+#endregion
 
 namespace Demo.FunctionApp
 {

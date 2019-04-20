@@ -1,4 +1,5 @@
-﻿using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+﻿#region
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
@@ -8,6 +9,7 @@ using Demo.FunctionApp.Functions;
 using Demo.FunctionApp.Services;
 
 using Microsoft.Extensions.DependencyInjection;
+#endregion
 
 namespace Demo.FunctionApp
 {

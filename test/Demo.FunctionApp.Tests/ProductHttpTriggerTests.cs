@@ -1,3 +1,4 @@
+#region
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
+#endregion
 
 namespace Demo.FunctionApp.Tests
 {
@@ -22,7 +24,7 @@ namespace Demo.FunctionApp.Tests
         public async Task Given_Factory_Method_Should_Return_Result()
         {
             // Arrange
-            var resultInvoked = "lorem ipsum";
+            var resultInvoked = true;
             var payload = "Hello World";
             var result = new OkObjectResult(payload);
 

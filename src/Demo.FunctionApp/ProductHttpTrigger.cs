@@ -50,7 +50,7 @@ namespace Demo.FunctionApp
                                       .InvokeAsync<HttpRequest, IActionResult>(req)
                                       .ConfigureAwait(false);
 
-            Factory.ResultInvoked = "lorem ipsum";
+            Factory.ResultInvoked = true;
 
             return result;
         }

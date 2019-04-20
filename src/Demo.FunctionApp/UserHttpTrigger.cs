@@ -1,3 +1,4 @@
+#region
 using System.Net;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+#endregion
 
 namespace Demo.FunctionApp
 {
